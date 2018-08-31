@@ -2,6 +2,6 @@
 
 source "https://rubygems.org"
 
-git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
+git_source(:github) {|battle_ship_2| "https://github.com/#{battle_ship_2}" }
 
-# gem "rails"
+gem 'simplecov', require: false, group: :test
