@@ -16,6 +16,11 @@ class BattleShipTest < Minitest::Test
     Would you like to (p)lay, read the (i)nstructions, or (q)uit?
     >'
     actual = battle_ship.welcome
-    assert_equal expected, actual
+    assert_equal  expected, actual
+  end
+
+  def test_that_user_input_is_entered
+    battle_ship = BattleShip.new
+    assert_equal 'p', battle_ship.user_input('p')
   end
 end
