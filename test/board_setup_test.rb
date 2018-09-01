@@ -32,10 +32,10 @@ class BoardShipTest < Minitest::Test
 
   def test_that_the_board_can_be_updated
     board = BoardSetup.new
-    board.update_board('b3')
-    board.update_board('D1')
-    board.update_board('a2')
-    board.update_board('C4')
+    board.update_board('b3', '#')
+    board.update_board('D1', '#')
+    board.update_board('a2', '#')
+    board.update_board('C4', '#')
     expected = '==========='
     '. 1 2 3 4'
     'A   #    '

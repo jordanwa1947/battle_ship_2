@@ -11,17 +11,17 @@ attr_accessor :a, :b, :c, :d
     @three = "=" * 11
   end
 
-  def update_board(cord)
+  def update_board(cord, fill)
     num = cord[1].to_i * 2
     let = cord[0].to_s.upcase
     if let == "A"
-      @a[num] = "#"
+      @a[num] = fill
     elsif let == "B"
-      @b[num] = "#"
+      @b[num] = fill 
     elsif let == "C"
-      @c[num] = "#"
+      @c[num] = fill
     else let == "D"
-      @d[num] = "#"
+      @d[num] = fill
     end
   end
 
