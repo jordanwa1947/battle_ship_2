@@ -29,22 +29,29 @@ class ValidateCoords
     sorted_coords = coord_array.sort
     index = @board_coords.index(sorted_coords[1])
     if sorted_coords[1][1].to_i < 4
-      if !(@board_coords[index + 1] == sorted_coords[2])
-        'please type valid coordinates'
-      elsif !(@board_coords[index + 4] == sorted_coords[2])
-        'please type valid coordinates'
-      else
-        coord_array
-      end
+      coords_less_than_4(index, sorted_coords, coord_array)
     else sorted_coords[1][1].to_i == 4
-      if !(@board_coords[index - 1] == sorted_coords[2])
-        'please type valid coordinates'
-      elsif !(@board_coords[index + 4] == sorted_coords[2])
-        'please type valid coordinates'
-      else
-        coord_array
-      end
+      coords_equal_to_4(index, sorted_coords, coord_array)
     end
+  end
 
+  def coords_less_than_4(index, coordinates, coord_array)
+    if !(@board_coords[index + 1] == coordinates[2])
+      'please type valid coordinates'
+    elsif !(@board_coords[index + 4] == coordinates[2])
+      'please type valid coordinates'
+    else
+      coord_array.join
+    end
+  end
+
+  def coords_equal_to_4(index, coordinates, coord_array)
+    if !(@board_coords[index - 1] == coordinates[2])
+      'please type valid coordinates'
+    elsif !(@board_coords[index + 4] == coordinates[2])
+      'please type valid coordinates'
+    else
+      coord_array.join
+    end
   end
 end
