@@ -1,3 +1,5 @@
+require './lib/rules.md'
+
 class BattleShip
 
   def welcome
@@ -11,7 +13,7 @@ class BattleShip
     if option == 'p'
       'insert_class'
     elsif option == 'i'
-      'instructions'
+      'rules'
     elsif option == 'q'
       'break'
     else
