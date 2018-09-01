@@ -8,6 +8,15 @@ class ValidateCoordsTest < Minitest::Test
     assert_instance_of ValidateCoords, validate_coords
   end
 
+  def test_that_validate_coords_starts_with_board_coords
+    validate_coords = ValidateCoords.new
+    expected = ["A1", "A2", "A3", "A4",
+                "B1", "B2", "B3", "B4",
+                "C1", "C2", "C3", "C4",
+                "D1", "D2", "D3", "D4"]
+    assert_equal expected, validate_coords.board_coords                     
+  end
+
   def test_that_validate_coords_can_intake_user_input
     validate_coords = ValidateCoords.new
     assert_equal 'A1 A2', validate_coords.ship2('A1 A2')

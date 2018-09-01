@@ -1,5 +1,6 @@
 require 'pry'
 class ValidateCoords
+  attr_reader :board_coords
   def initialize
       @board_coords = ["A1", "A2", "A3", "A4",
                        "B1", "B2", "B3", "B4",
