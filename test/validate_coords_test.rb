@@ -36,4 +36,11 @@ class ValidateCoordsTest < Minitest::Test
     actual = validate_coords.validate_coords(['B4', ' ', 'D4'])
     assert_equal expected, actual
   end
+
+  def test_that_validate_coords_can_test_valid_coordinates
+    validate_coords = ValidateCoords.new
+    expected = ('A1 A2')
+    actual = validate_coords.validate_coords(['A1', ' ', 'A2'])
+    assert_equal expected, actual
+  end
 end

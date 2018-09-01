@@ -10,7 +10,6 @@ class ValidateCoords
   def ship2(coordinates)
     coord_array = coordinates.partition(' ')
     check_for_coords(coord_array)
-    #validate_coords(coord_array)
   end
 
   def check_for_coords(coords_array)
@@ -21,7 +20,7 @@ class ValidateCoords
     elsif !(@board_coords.include?(coords_array[2]))
       'please type valid coordinates'
     else
-      coords_array.join
+      validate_coords(coords_array)
     end
   end
 
@@ -36,22 +35,22 @@ class ValidateCoords
   end
 
   def coords_less_than_4(index, coordinates, coord_array)
-    if !(@board_coords[index + 1] == coordinates[2])
-      'please type valid coordinates'
-    elsif !(@board_coords[index + 4] == coordinates[2])
-      'please type valid coordinates'
-    else
+    boolean1 = @board_coords[index + 1] == coordinates[2]
+    boolean2 = @board_coords[index + 4] == coordinates[2]
+    if boolean1 or boolean2
       coord_array.join
+    else
+      'please type valid coordinates'
     end
   end
 
   def coords_equal_to_4(index, coordinates, coord_array)
-    if !(@board_coords[index - 1] == coordinates[2])
-      'please type valid coordinates'
-    elsif !(@board_coords[index + 4] == coordinates[2])
-      'please type valid coordinates'
-    else
+    boolean1 = @board_coords[index - 1] == coordinates[2]
+    boolean2 = @board_coords[index + 4] == coordinates[2]
+    if boolean1 or boolean2
       coord_array.join
+    else
+      'please type valid coordinates'
     end
   end
 end
