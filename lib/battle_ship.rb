@@ -8,6 +8,14 @@ class BattleShip
   end
 
   def user_input(option)
-    option   
+    if option == 'p'
+      'insert_class'
+    elsif option == 'i'
+      'instructions'
+    elsif option == 'q'
+      'break'
+    else
+      'not a valid option'
+    end
   end
 end

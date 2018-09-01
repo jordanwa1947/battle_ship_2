@@ -21,6 +21,9 @@ class BattleShipTest < Minitest::Test
 
   def test_that_user_input_is_entered
     battle_ship = BattleShip.new
-    assert_equal 'p', battle_ship.user_input('p')
+    assert_equal 'insert_class', battle_ship.user_input('p')
+    assert_equal 'break', battle_ship.user_input('q')
+    assert_equal 'instructions', battle_ship.user_input('i')
+    assert_equal 'not a valid option', battle_ship.user_input('vjx')
   end
 end
