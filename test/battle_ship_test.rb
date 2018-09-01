@@ -1,6 +1,7 @@
 require './test/help_test.rb'
 require './lib/battle_ship'
 
+
 class BattleShipTest < Minitest::Test
 
   def test_that_the_battle_ship_class_exists
