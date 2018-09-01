@@ -56,14 +56,21 @@ class ValidateCoordsTest < Minitest::Test
   def test_that_validate_coords_can_validate_ship3_coords
     validate_coords = ValidateCoords.new
     validated = validate_coords.ship2('A1 A2')
-    assert_equal ('B1 B3'), validate_coords.ship3(validated, 'B1 B3')
+    assert_equal ('B1 B2 B3'), validate_coords.ship3(validated, 'B1 B3')
   end
 
-  def test_that_ship3_can_invalidate_invalid_coords
+  def test_that_validate_ship_3_can_stop_overlap
     skip
     validate_coords = ValidateCoords.new
-    invalidated = validate_coords.ship2('A1 A2')
-    expected = 'please type valid coordinates'
+    validated = validate_coords.ship2('A1 A2')
+    expected =
     assert_equal expected, validate_coords.ship3('A1 A4')
+  end
+
+  def test_that_ships_may_not_overlap
+    validate_coords = ValidateCoords.new
+    validated = validate_coords.ship2('B1 B2')
+    actual = validate_coords.ship3(validated, 'A2 C2')
+    assert_equal 'ships may not overlap', actual
   end
 end
