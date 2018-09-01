@@ -1,4 +1,4 @@
-"First enter the Coordinates for a two unit ship (example: \"A1 A2\") and
+  "First enter the Coordinates for a two unit ship (example: \"A1 A2\") and
 a three unit ship. Coordinates must be the first and last unit of your ship.
 Ships may not overlap or bend arround the board and can only be placed
 horizontally or vertically. The computer will place it's ships and prompt
@@ -16,6 +16,6 @@ space. When one of your ships receives a hit on each coordinate, the computer
 will announce that it has sunk your battle ship and vice versa. Game play
 continues until either you or the computer has sunk all of the openent's ships.
 
-It is, of course, illegal to change the position of the ships on the board
+  It is, of course, illegal to change the position of the ships on the board
 once play has begun. The first player to sink all five of his opponent's
 ships wins the game."
