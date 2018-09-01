@@ -1,22 +1,50 @@
+require 'pry'
 class ValidateCoords
-
-  def ship2(coordinates)
-    coords_array = coordinates.split('')
-    coord1(coords_array)
+  def initialize
+      @board_coords = ["A1", "A2", "A3", "A4",
+                       "B1", "B2", "B3", "B4",
+                       "C1", "C2", "C3", "C4",
+                       "D1", "D2", "D3", "D4"]
   end
 
-  def coord1(coord_array)
-    coords_array = coordinates.split('')
-    if coords_array.length != 5 or coords_array[2] != ' '
+  def ship2(coordinates)
+    coord_array = coordinates.partition(' ')
+    check_for_coords(coord_array)
+    #validate_coords(coord_array)
+  end
+
+  def check_for_coords(coords_array)
+    if coords_array[1] != ' '
       'please type valid coordinates'
-    elsif !(coords_array[0] =~ /[A-D]/) or !(coords_array =~ /[1-4]/)
+    elsif !(@board_coords.include?(coords_array[0]))
+      'please type valid coordinates'
+    elsif !(@board_coords.include?(coords_array[2]))
       'please type valid coordinates'
     else
-      coordinates
+      coords_array.join
     end
   end
 
-  def ship2_coord2
+  def validate_coords(coord_array)
+    sorted_coords = coord_array.sort
+    index = @board_coords.index(sorted_coords[1])
+    if sorted_coords[1][1].to_i < 4
+      if !(@board_coords[index + 1] == sorted_coords[2])
+        'please type valid coordinates'
+      elsif !(@board_coords[index + 4] == sorted_coords[2])
+        'please type valid coordinates'
+      else
+        coord_array
+      end
+    else sorted_coords[1][1].to_i == 4
+      if !(@board_coords[index - 1] == sorted_coords[2])
+        'please type valid coordinates'
+      elsif !(@board_coords[index + 4] == sorted_coords[2])
+        'please type valid coordinates'
+      else
+        coord_array
+      end
+    end
 
   end
 end
