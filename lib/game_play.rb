@@ -63,9 +63,22 @@ end
 if computer_coords.include?(coord)
   player_fire_range.update_board(coord, 'H')
   puts 'Hit!'
+  computer_coords.delete(coord)
   player_fire_range.display_board
 else
   puts 'You Missed'
   player_fire_range.update_board(coord, 'M')
   player_fire_range.display_board
+end
+
+comp_coord = validate_coords.board_coords.sample
+if coords3_array.include?(comp_coord) or coords2_array.include?(comp_coord)
+  player_board.update_board(coord, 'H')
+  puts 'I Hit!'
+  coords3_array.delete(coord)
+  player_board.display_board
+else
+  puts 'I Missed'
+  player_board.update_board(coord, 'M')
+  player_board.display_board
 end
