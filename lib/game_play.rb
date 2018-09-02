@@ -60,7 +60,7 @@ while valid_invalid == false
   valid_invalid = validate_coords.board_coords.include?(coord)
 end
 
-if coords2_array.include?(coord) or coords3_array.include?(coord)
+if computer_coords.include?(coord)
   player_fire_range.update_board(coord, 'H')
   puts 'Hit!'
   player_fire_range.display_board
