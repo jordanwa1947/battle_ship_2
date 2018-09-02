@@ -14,7 +14,7 @@ class ValidateCoordsTest < Minitest::Test
                 "B1", "B2", "B3", "B4",
                 "C1", "C2", "C3", "C4",
                 "D1", "D2", "D3", "D4"]
-    assert_equal expected, validate_coords.board_coords                     
+    assert_equal expected, validate_coords.board_coords
   end
 
   def test_that_validate_coords_can_intake_user_input
@@ -35,21 +35,60 @@ class ValidateCoordsTest < Minitest::Test
   def test_that_validate_coords_can_validate_the_coordinates_less_than_four
     validate_coords = ValidateCoords.new
     expected = 'please type valid coordinates'
-    actual = validate_coords.validate_coords(['A1', ' ', 'D3'])
+    actual = validate_coords.validate_ship2(['A1', ' ', 'D3'])
     assert_equal expected, actual
   end
 
   def test_that_validate_coords_can_validate_coordinates_equal_to_four
     validate_coords = ValidateCoords.new
     expected = 'please type valid coordinates'
-    actual = validate_coords.validate_coords(['B4', ' ', 'D4'])
+    actual = validate_coords.validate_ship2(['B4', ' ', 'D4'])
     assert_equal expected, actual
   end
 
   def test_that_validate_coords_can_test_valid_coordinates
     validate_coords = ValidateCoords.new
     expected = ('A1 A2')
-    actual = validate_coords.validate_coords(['A1', ' ', 'A2'])
+    actual = validate_coords.validate_ship2(['A1', ' ', 'A2'])
     assert_equal expected, actual
+  end
+
+  def test_that_validate_coords_can_fill_horizontal_ship3_coords
+    validate_coords = ValidateCoords.new
+    validated = validate_coords.ship2('A1 A2')
+    assert_equal ('B1 B2 B3'), validate_coords.ship3(validated, 'B1 B3')
+  end
+
+  def test_that_validate_coords_can_fill_vertical_ship3_coords_out_of_order
+    validate_coords = ValidateCoords.new
+    validated = validate_coords.ship2('A1 A2')
+    assert_equal ('D4 C4 B4'), validate_coords.ship3(validated, 'D4 B4')
+  end
+
+  def test_that_validate_coords_can_fill_vertical_ship3_coords
+    validate_coords = ValidateCoords.new
+    validated = validate_coords.ship2('A1 A2')
+    assert_equal ('B4 C4 D4'), validate_coords.ship3(validated, 'B4 D4')
+  end
+
+  def test_that_validate_ship_3_can_stop_overlap
+    validate_coords = ValidateCoords.new
+    validated = validate_coords.ship2('A1 A2')
+    expected = 'ships may not overlap'
+    assert_equal expected, validate_coords.ship3(validated, 'A1 A4')
+  end
+
+  def test_that_ships_may_not_overlap
+    validate_coords = ValidateCoords.new
+    validated = validate_coords.ship2('B1 B2')
+    actual = validate_coords.ship3(validated, 'A2 C2')
+    assert_equal 'ships may not overlap', actual
+  end
+
+  def test_that_invalid_coordinates_are_detected
+    validate_coords = ValidateCoords.new
+    validated = validate_coords.ship2('B1 B2')
+    actual = validate_coords.ship3(validated, 'gkgj')
+    assert_equal 'please type valid coordinates', actual
   end
 end
