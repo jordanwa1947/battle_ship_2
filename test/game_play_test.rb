@@ -2,22 +2,22 @@ require './test/help_test.rb'
 require './lib/computer_ships'
 require './lib/board_setup'
 require './lib/validate_coords'
-require './lib/fire_sequence'
+require './lib/game_play'
 
 
-class FireSequenceTest < Minitest::Test
+class GamePlayTest < Minitest::Test
 
   def test_that_the_fire_sequence_class_exists
-    fire_sequence = FireSequence.new
-    assert_instance_of FireSequence, fire_sequence
+    game_play = GamePlay.new
+    assert_instance_of FireSequence, game_play
   end
 
-  def test_that_fire_sequence_intakes_user_input
+  def test_that_game_play_intakes_user_input
     validate_coords = ValidateCoords.new
     computer_ships = ComputerShips.new
     player_board = BoardSetup.new
     computer_board = BoardSetup.new
-    fire_sequence = FireSequence.new
+    game_play = FireSequence.new
 
     ship2_coords = validate_coords.ship2('A1 A2')
     ship3_coords = validate_coords.ship3(ship2_coords, 'D1 D3')
@@ -26,8 +26,7 @@ class FireSequenceTest < Minitest::Test
 
     computer_coords = computer_ships.ships_may_not_overlap
     computer_coords.each { |coord| computer_board.update_board(coord, '#') }
-    binding.pry
-    player_target('A1')
+    check_coord('A1')
 
   end
 end
