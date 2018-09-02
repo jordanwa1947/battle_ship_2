@@ -17,7 +17,7 @@ attr_reader :one, :two, :three,
     if let == "A"
       @a[num] = fill
     elsif let == "B"
-      @b[num] = fill
+      @b[num] = fill 
     elsif let == "C"
       @c[num] = fill
     else let == "D"
