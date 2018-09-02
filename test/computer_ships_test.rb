@@ -18,10 +18,12 @@ class ComputerShipsTest < Minitest::Test
     assert_equal expected, computer_ships.board_coords
   end
 
-  def test_that_the_computer_can_choose_a_random_coord_to_start_ship2
+  def test_that_the_computer_can_choose_coordinates_for_ship2
     computer_ships = ComputerShips.new
-    coord1 = computer_ships.ship2_coord1
-    expected = computer_ships.board_coords.include?(coord1)
+    coords = computer_ships.comp_ship2
+    expected = computer_ships.board_coords.include?(coords[0])
+    expected2 = computer_ships.board_coords.include?(coords[1])
     assert expected
+    assert expected2
   end
 end
