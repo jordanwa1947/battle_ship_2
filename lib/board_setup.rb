@@ -26,12 +26,12 @@ attr_reader :one, :two, :three,
   end
 
   def display_board
-    @one
-    @two
-    @a
-    @b
-    @c
-    @d
-    @three
+  puts  @one
+  puts  @two
+  puts  @a
+  puts  @b
+  puts  @c
+  puts  @d
+  puts  @three
   end
 end
