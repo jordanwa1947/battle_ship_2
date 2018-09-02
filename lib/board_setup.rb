@@ -1,6 +1,6 @@
 class BoardSetup
-attr_reader :one, :two, :three
-attr_accessor :a, :b, :c, :d
+attr_reader :one, :two, :three,
+            :a, :b, :c, :d
   def initialize
     @one = "=" * 11
     @two = ". 1 2 3 4"

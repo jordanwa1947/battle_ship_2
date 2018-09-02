@@ -114,3 +114,4 @@ class ValidateCoords
     end
   end
 end
+
