@@ -1,6 +1,7 @@
 require './lib/computer_ships'
 require './lib/board_setup'
 require './lib/validate_coords'
+require './lib/fire_sequence'
 require 'pry'
 
 validate_coords = ValidateCoords.new
@@ -51,34 +52,40 @@ coords3_array = ship3_coords.split(' ')
 coords3_array.each { |coord| player_board.update_board(coord, '#') }
 player_board.display_board
 
+fire_sequence = FireSequence.new(player_fire_range, player_board,
+                                computer_coords, coords2_array, coords3_array)
+
 puts 'Choose a coordinate to fire at'
-coord = gets.chomp.upcase
-valid_invalid = validate_coords.board_coords.include?(coord)
-while valid_invalid == false
-  puts "sorry, that's not a valid coordinate"
-  coord = gets.chomp.upcase
-  valid_invalid = validate_coords.board_coords.include?(coord)
-end
-
-if computer_coords.include?(coord)
-  player_fire_range.update_board(coord, 'H')
-  puts 'Hit!'
-  computer_coords.delete(coord)
-  player_fire_range.display_board
-else
-  puts 'You Missed'
-  player_fire_range.update_board(coord, 'M')
-  player_fire_range.display_board
-end
-
-comp_coord = validate_coords.board_coords.sample
-if coords3_array.include?(comp_coord) or coords2_array.include?(comp_coord)
-  player_board.update_board(coord, 'H')
-  puts 'I Hit!'
-  coords3_array.delete(coord)
-  player_board.display_board
-else
-  puts 'I Missed'
-  player_board.update_board(coord, 'M')
-  player_board.display_board
-end
+valid_coord = fire_sequence.validate_player_coord(validate_coords)
+fire_sequence.player_fire(valid_coord)
+fire_sequence.computer_fire(validate_coords)
+# coord = gets.chomp.upcase
+# valid_invalid = validate_coords.board_coords.include?(coord)
+# while valid_invalid == false
+#   puts "sorry, that's not a valid coordinate"
+#   coord = gets.chomp.upcase
+#   valid_invalid = validate_coords.board_coords.include?(coord)
+# end
+#
+# if computer_coords.include?(coord)
+#   player_fire_range.update_board(coord, 'H')
+#   puts 'Hit!'
+#   computer_coords.delete(coord)
+#   player_fire_range.display_board
+# else
+#   puts 'You Missed'
+#   player_fire_range.update_board(coord, 'M')
+#   player_fire_range.display_board
+# end
+#
+# comp_coord = validate_coords.board_coords.sample
+# if coords3_array.include?(comp_coord) or coords2_array.include?(comp_coord)
+#   player_board.update_board(coord, 'H')
+#   puts 'I Hit!'
+#   coords3_array.delete(coord)
+#   player_board.display_board
+# else
+#   puts 'I Missed'
+#   player_board.update_board(coord, 'M')
+#   player_board.display_board
+# end
