@@ -23,18 +23,25 @@ The grid has A1 at the top left and D4 at the bottom right.
 Enter the squares for the two-unit ship:'
 
 ship2_coords = validate_coords.ship2(gets.chomp)
-while ship2_coords == invalid or ship2_coords == overlap
-  puts 'please try again'
+while ship2_coords == invalid
+  puts invalid
   ship2_coords = validate_coords.ship2(gets.chomp)
 end
+
 ship2_coords.split(' ').each { |coord| player_board.update_board(coord, '#')}
 player_board.display_board
 
 puts 'Now enter the square for the three-unit ship:'
 ship3_coords = validate_coords.ship3(ship2_coords, gets.chomp)
 while ship3_coords == invalid or ship3_coords == overlap
-  puts 'please try again'
-  ship3_coords = validate_coords.ship3(ship2_coords, gets.chomp)
+  if ship3_coords == invalid
+    puts invalid
+    ship3_coords = validate_coords.ship3(ship2_coords, gets.chomp)
+  else ship3_coords == overlap
+    puts overlap
+    puts 'please try again'
+    ship3_coords = validate_coords.ship3(ship2_coords, gets.chomp)
+  end
 end
 coord_array = ship3_coords.split(' ')
 coord_array.each { |coord| player_board.update_board(coord, '#') }
