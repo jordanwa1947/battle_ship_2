@@ -29,7 +29,8 @@ while ship2_coords == invalid
   ship2_coords = validate_coords.ship2(gets.chomp.upcase)
 end
 
-ship2_coords.split(' ').each { |coord| player_board.update_board(coord, '#')}
+coords2_array = ship2_coords.split(' ')
+coords2_array.each { |coord| player_board.update_board(coord, '#')}
 player_board.display_board
 
 puts 'Now enter the square for the three-unit ship:'
@@ -46,8 +47,8 @@ while ship3_coords == invalid or ship3_coords == overlap
   end
 end
 
-coord_array = ship3_coords.split(' ')
-coord_array.each { |coord| player_board.update_board(coord, '#') }
+coords3_array = ship3_coords.split(' ')
+coords3_array.each { |coord| player_board.update_board(coord, '#') }
 player_board.display_board
 
 puts 'Choose a coordinate to fire at'
@@ -57,4 +58,14 @@ while valid_invalid == false
   puts "sorry, that's not a valid coordinate"
   coord = gets.chomp.upcase
   valid_invalid = validate_coords.board_coords.include?(coord)
+end
+
+if coords2_array.include?(coord) or coords3_array.include?(coord)
+  player_fire_range.update_board(coord, 'H')
+  puts 'Hit!'
+  player_fire_range.display_board
+else
+  puts 'You Missed'
+  player_fire_range.update_board(coord, 'M')
+  player_fire_range.display_board
 end
