@@ -35,7 +35,7 @@ class ValidateCoords
     index = @board_coords.index(sorted_coords[1])
     if sorted_coords[1][1].to_i < 4
       coords_less_than_4(index, sorted_coords, coord_array)
-    else sorted_coords[1][1].to_i == 4
+    else
       coords_equal_to_4(index, sorted_coords, coord_array)
     end
   end
@@ -85,7 +85,7 @@ class ValidateCoords
     boolean1 = @board_coords[index + 2] == coordinates[2]
     boolean2 = @board_coords[index + 8] == coordinates[2]
     if boolean1
-      coord_array.insert(1, " #{coord_array[0].succ}")
+      coord_array.insert(1, " #{coordinates[1].succ}")
     elsif boolean2
       coord_array.insert(1, " #{@board_coords[index + 4]}")
       coord_array.join
@@ -114,4 +114,3 @@ class ValidateCoords
     end
   end
 end
-

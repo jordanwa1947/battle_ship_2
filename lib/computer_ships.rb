@@ -23,7 +23,7 @@ class ComputerShips
     while ship3.include?(ship2[0]) or ship3.include?(ship2[1])
       ship3 = comp_ship3
     end
-    [ship2, ship3].flatten
+    [ship2, ship3]
   end
 
   def ship2_coord2(index, coord1)

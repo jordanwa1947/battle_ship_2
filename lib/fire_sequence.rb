@@ -11,7 +11,7 @@ class FireSequence
       @player_board = player_board
       @validate_coords = validate_coords
       @computer_ships = computer_ships
-      @computer_coords = computer_coords
+      @comp_coords = computer_coords
       @coords3_array = coords3_array
       @coords2_array = coords2_array
   end
@@ -33,10 +33,11 @@ class FireSequence
   end
 
   def player_fire(coord)
-    if @computer_coords.include?(coord)
+    @validate_coords.board_coords.delete(coord)
+    if @comp_coords[0].include?(coord) or @comp_coords[1].include?(coord)
       puts 'Hit!'
       @player_fire_range.update_board(coord, 'H')
-      @computer_coords.delete(coord)
+      delete_coords(coord)
       @player_fire_range.display_board
     else
       puts 'You Missed'
@@ -45,7 +46,25 @@ class FireSequence
     end
   end
 
-  def computer_fire(validate_coords)
+  def delete_coords(coord)
+    @comp_coords[0].delete(coord)
+    @comp_coords[1].delete(coord)
+    if_player_sinks_a_ship
+  end
+
+  def if_player_sinks_a_ship
+    if @comp_coords[0].empty? and @comp_coords[1].empty?
+      puts 'You Won!'
+    elsif @comp_coords[0].empty?
+      puts 'You Sank My 2 Unit Ship!'
+    elsif @comp_coords[1].empty?
+      puts 'You Sank My 3 Unit Ship!'
+    else
+      return
+    end
+  end
+
+  def computer_fire
     comp_coord = @computer_ships.board_coords.sample
     @computer_ships.board_coords.delete(comp_coord)
     if @coords3_array.include?(comp_coord) or @coords2_array.include?(comp_coord)
@@ -53,7 +72,6 @@ class FireSequence
       @player_board.update_board(comp_coord, 'H')
       if_computer_sinks_ship(comp_coord)
       @player_board.display_board
-      comp_coord
     else
       puts 'I Missed'
       @player_board.update_board(comp_coord, 'M')
@@ -64,26 +82,51 @@ class FireSequence
   def if_computer_sinks_ship(comp_coord)
     @coords2_array.delete(comp_coord)
     @coords3_array.delete(comp_coord)
-    puts 'I sunk your 2 unit ship!' if @coords2_array.empty?
-    puts 'I sunk your 3 unit ship!' if @coords3_array.empty?
+    if_the_computer_won
+  end
+
+  def if_the_computer_won
+    if @coords2_array.empty? and @coords3_array.empty?
+      puts 'I Won!'
+      puts 'Sorry about to loss champ'
+    elsif @coords2_array.empty?
+      puts 'I Sank Your 2 Unit Ship!'
+    elsif @coords3_array.empty?
+      puts 'I Sank Your 3 Unit Ship!'
+    else
+      return
+    end
   end
 
   def computers_turn
-    puts "Now it's the comuter's turn; press c to continue."
+    puts "Now it's the My turn; press c to continue."
     input = gets.chomp
     while input != 'c'
       input = gets.chomp
     end
   end
 
+  def player_wins
+    if @comp_coords[0].empty? and @comp_coords[1].empty?
+      puts 'You Won!'
+      return true
+    end
+  end
+
+  def detecting_the_end
+    comp_ship_hits = (!(@comp_coords[0].empty?) or !(@comp_coords[1].empty?))
+    player_ship_hits = (!(@coords2_array.empty?) or !(@coords3_array.empty?))
+    comp_ship_hits and player_ship_hits
+  end
+
   def fire_sequence
-    while !(@computer_coords.empty?) and (!(@coords2_array.empty?) or !(@coords3_array.empty?))
+    while detecting_the_end
       puts 'Choose a coordinate to fire at'
       valid_coord = validate_player_coord
       player_fire(valid_coord)
-      break if @computer_coords.empty?
+      break if player_wins
       computers_turn
-      computer_fire(@validate_coords)
+      computer_fire
     end
   end
 end
