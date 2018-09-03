@@ -1,4 +1,4 @@
-require './lib/help_test'
+require './test/help_test'
 require './lib/fire_sequence'
 require './lib/board_setup'
 require './lib/validate_coords'
