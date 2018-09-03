@@ -32,24 +32,35 @@ class ValidateCoordsTest < Minitest::Test
     assert_equal 'please type valid coordinates', validate_coords.ship2('J1 A2')
   end
 
-  def test_that_validate_coords_can_validate_the_coordinates_less_than_four
+  def test_that_validate_coords_can_validate_the_second_coordinate
+    validate_coords = ValidateCoords.new
+    assert_equal 'please type valid coordinates', validate_coords.ship2('A1 Z2')
+  end
+
+  def test_that_validate_coords_can_invalidate_the_coordinates_less_than_four
     validate_coords = ValidateCoords.new
     expected = 'please type valid coordinates'
     actual = validate_coords.validate_ship2(['A1', ' ', 'D3'])
     assert_equal expected, actual
   end
+  def test_that_validate_coords_can_validate_the_coordinates_less_than_four
+    validate_coords = ValidateCoords.new
+    expected = 'D4 D3'
+    actual = validate_coords.validate_ship2(['D4', ' ', 'D3'])
+    assert_equal expected, actual
+  end
 
-  def test_that_validate_coords_can_validate_coordinates_equal_to_four
+  def test_that_validate_coords_can_invalidate_coordinates_equal_to_four
     validate_coords = ValidateCoords.new
     expected = 'please type valid coordinates'
     actual = validate_coords.validate_ship2(['B4', ' ', 'D4'])
     assert_equal expected, actual
   end
 
-  def test_that_validate_coords_can_test_valid_coordinates
+  def test_that_validate_coords_can_validate_coordinates_equal_to_four
     validate_coords = ValidateCoords.new
-    expected = ('A1 A2')
-    actual = validate_coords.validate_ship2(['A1', ' ', 'A2'])
+    expected = 'A4 B4'
+    actual = validate_coords.validate_ship2(['A4', ' ', 'B4'])
     assert_equal expected, actual
   end
 
@@ -62,7 +73,7 @@ class ValidateCoordsTest < Minitest::Test
   def test_that_validate_coords_can_fill_vertical_ship3_coords_out_of_order
     validate_coords = ValidateCoords.new
     validated = validate_coords.ship2('A1 A2')
-    assert_equal ('D4 C4 B4'), validate_coords.ship3(validated, 'D4 B4')
+    assert_equal ('D4 D3 D2'), validate_coords.ship3(validated, 'D4 D2')
   end
 
   def test_that_validate_coords_can_fill_vertical_ship3_coords
