@@ -5,6 +5,8 @@ require './lib/fire_sequence'
 require 'pry'
 
 class GamePlay
+  attr_reader :validate_coords, :computer_ships, :player_board,
+              :computer_board, :player_fire_range
   def initialize
     @invalid = 'please type valid coordinates'
     @overlap = 'ships may not overlap'
@@ -31,6 +33,7 @@ class GamePlay
     computer_coords.each { |coord| @computer_board.update_board(coord, '#') }
     computer_coords
   end
+
   def prompt_ship2
     puts    "    I have laid out my ships on the grid.
     You now need to layout your two ships.
@@ -43,11 +46,16 @@ class GamePlay
 
   def player_chooses_ship2
     ship2_coords = @validate_coords.ship2(gets.chomp.upcase)
+    valid_ship2_coords = correct_invalid_ship_coords(ship2_coords)
+    pop_board_with_player_ship2(valid_ship2_coords)
+  end
+
+  def correct_invalid_ship_coords(ship2_coords)
     while ship2_coords == @invalid
       puts @invalid
       ship2_coords = @validate_coords.ship2(gets.chomp.upcase)
     end
-    pop_board_with_player_ship2(ship2_coords)
+    ship2_coords
   end
 
   def pop_board_with_player_ship2(ship2_coords)
@@ -66,16 +74,20 @@ class GamePlay
 
   def ship3_coords_must_be_valid(ship3_coords, ship2_coords)
     while ship3_coords == @invalid or ship3_coords == @overlap
-      if ship3_coords == @invalid
-        puts @invalid
-        ship3_coords = @validate_coords.ship3(ship2_coords, gets.chomp.upcase)
-      else ship3_coords == @overlap
-        puts @overlap
-        puts 'please try again'
-        ship3_coords = @validate_coords.ship3(ship2_coords, gets.chomp.upcase)
-      end
+      ship3_coords = ship_placement_error_type(ship3_coords, ship2_coords)
     end
     ship3_coords
+  end
+
+  def ship_placement_error_type(ship3_coords, ship2_coords)
+    if ship3_coords == @invalid
+      puts @invalid
+      @validate_coords.ship3(ship2_coords, gets.chomp.upcase)
+    else ship3_coords == @overlap
+      puts @overlap
+      puts 'please try again'
+      @validate_coords.ship3(ship2_coords, gets.chomp.upcase)
+    end
   end
 
   def pop_board_with_player_ship3(ship3_coords)
@@ -85,6 +97,3 @@ class GamePlay
     ship3_coords
   end
 end
-
-game_play = GamePlay.new
-game_play.game_play

@@ -7,26 +7,31 @@ require './lib/game_play'
 
 class GamePlayTest < Minitest::Test
 
-  def test_that_the_fire_sequence_class_exists
+  def test_that_the_game_play_class_exists
     game_play = GamePlay.new
-    assert_instance_of FireSequence, game_play
+    assert_instance_of GamePlay, game_play
   end
 
-  def test_that_game_play_intakes_user_input
-    validate_coords = ValidateCoords.new
-    computer_ships = ComputerShips.new
-    player_board = BoardSetup.new
-    computer_board = BoardSetup.new
-    game_play = FireSequence.new
+  def test_that_game_play_is_initialized_with_necessary_classes
+    game_play = GamePlay.new
+    assert_instance_of ValidateCoords, game_play.validate_coords
+    assert_instance_of ComputerShips, game_play.computer_ships
+    assert_instance_of BoardSetup, game_play.computer_board
+    assert_instance_of BoardSetup, game_play.player_board
+    assert_instance_of BoardSetup, game_play.player_fire_range
+  end
 
-    ship2_coords = validate_coords.ship2('A1 A2')
-    ship3_coords = validate_coords.ship3(ship2_coords, 'D1 D3')
-    coord_array = (ship2_coords + ' ' + ship3_coords).split(' ')
-    coord_array.each { |coord| player_board.update_board(coord, '#') }
-
-    computer_coords = computer_ships.ships_may_not_overlap
-    computer_coords.each { |coord| computer_board.update_board(coord, '#') }
-    check_coord('A1')
-
+  def test_computer_chooses_ships_that_are_valid
+    game_play = GamePlay.new
+    computer_coords = game_play.computer_chooses_ships
+    ship2 = computer_coords[0..1].sort
+    if ship2[0][0] < 'D' and ship2[0][1] < '4'
+      boolean = (ship2[1] == ship2[0].succ or ship2[1][0] == ship2[0][0].succ)
+    elsif ship2[0][0] == 'D' and ship2[0][1] < '4'
+      boolean = (ship2[1] == ship2[0].succ)
+    else ship2[0][0] >= 'A' and ship2[0][1] == '4'
+      boolean = (ship2[1][0] == ship2[0][0].succ)
+    end
+    assert boolean
   end
 end
