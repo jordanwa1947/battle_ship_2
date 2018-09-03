@@ -15,13 +15,18 @@ class FireSequence
       @coords2_array = coords2_array
   end
 
-  def validate_player_coord(validate_coords)
+  def validate_player_coord
     coord = gets.chomp.upcase
-    valid_invalid = validate_coords.board_coords.include?(coord)
+    valid_invalid = @validate_coords.board_coords.include?(coord)
+    valid_coord = coords_must_be_valid(valid_invalid, coord)
+    valid_coord
+  end
+
+  def coords_must_be_valid(valid_invalid, coord)
     while valid_invalid == false
       puts "sorry, that's not a valid coordinate"
       coord = gets.chomp.upcase
-      valid_invalid = validate_coords.board_coords.include?(coord)
+      valid_invalid = @validate_coords.board_coords.include?(coord)
     end
     coord
   end
@@ -58,7 +63,7 @@ class FireSequence
   def fire_sequence
     while !(@computer_coords.empty?) and (!(@coords2_array.empty?) or !(@coords3_array.empty?))
       puts 'Choose a coordinate to fire at'
-      valid_coord = validate_player_coord(@validate_coords)
+      valid_coord = validate_player_coord
       player_fire(valid_coord)
       computer_fire(@validate_coords)
     end
