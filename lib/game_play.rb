@@ -24,7 +24,8 @@ class GamePlay
     coords3_array = player_chooses_ship3(ship2_coords).split(' ')
     coords2_array = ship2_coords.split(' ')
     fire_sequence = FireSequence.new(@player_fire_range, @player_board,
-      @validate_coords, computer_coords, coords2_array, coords3_array)
+                    @validate_coords, @computer_ships, computer_coords,
+                    coords2_array, coords3_array)
     fire_sequence.fire_sequence
   end
 
