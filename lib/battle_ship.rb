@@ -1,4 +1,5 @@
 require './lib/rules.md'
+require './lib/game_play'
 
 class BattleShip
 
