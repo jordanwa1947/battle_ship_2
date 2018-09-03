@@ -34,18 +34,4 @@ attr_reader :one, :two, :three,
   puts  @d
   puts  @three
   end
-
-  def check_coord(coord, fill)
-    num = coord[1].to_i * 2
-    let = coord[0].to_s.upcase
-    if let == "A"
-      @a[num]
-    elsif let == "B"
-      @b[num]
-    elsif let == "C"
-      @c[num]
-    else let == "D"
-      @d[num]
-    end
-  end
 end
