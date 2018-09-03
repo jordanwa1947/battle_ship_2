@@ -60,11 +60,20 @@ class FireSequence
     end
   end
 
+  def computers_turn
+    puts "Now it's the comuter's turn; press c to continue."
+    input = gets.chomp
+    while input != 'c'
+      input = gets.chomp
+    end
+  end
+
   def fire_sequence
     while !(@computer_coords.empty?) and (!(@coords2_array.empty?) or !(@coords3_array.empty?))
       puts 'Choose a coordinate to fire at'
       valid_coord = validate_player_coord
       player_fire(valid_coord)
+      computers_turn
       computer_fire(@validate_coords)
     end
   end

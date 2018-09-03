@@ -5,6 +5,8 @@ require './lib/fire_sequence'
 require 'pry'
 
 class GamePlay
+  attr_reader :validate_coords, :computer_ships, :player_board,
+              :computer_board, :player_fire_range
   def initialize
     @invalid = 'please type valid coordinates'
     @overlap = 'ships may not overlap'
