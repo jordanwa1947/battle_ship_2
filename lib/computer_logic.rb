@@ -70,18 +70,34 @@ class ComputerLogic
   end
 
   def top_and_bottom_side_coords2(index, coord)
-    if coord[0] == 'A'
-      choices = [@coords[index + 3], @coords[index + 5], @coords[index + 8]]
-    else coord[0] == 'D'
-      choices = [@coords[index - 5], @coords[index - 3], @coords[index - 8]]
+    if coord[0] == 'A' and coord[1] == '2'
+      choices = [@coords[index + 5], @coords[index + 3],
+                 @coords[index + 8], @coords[index + 2]]
+    elsif coord[0] == 'A' and coord[1] == '3'
+      choices = [@coords[index + 3], @coords[index + 5],
+                 @coords[index + 8], @coords[index - 2]]
+    elsif coord[0] == 'D' and coord[1] == '2'
+      choices = [@coords[index - 5], @coords[index - 3],
+                 @coords[index - 8], @coords[index + 2]]
+    else coord[0] == 'D' and coord[1] == '3'
+      choices = [@coords[index - 3], @coords[index - 5],
+                 @coords[index - 8], @coords[index - 2]]
     end
   end
 
   def right_and_left_side_coords2(index, coord)
-    if coord[1] == '1'
-      choices = [@coords[index + 5], @coords[index - 3], @coords[index + 2]]
-    else coord[1] == '4'
-      choices = [@coords[index + 3], @coords[index - 5], @coords[index - 2]]
+    if coord[0] == 'B' and coord[1] == '1'
+      choices = [@coords[index + 5], @coords[index - 3],
+                 @coords[index + 8], @coords[index + 2]]
+    elsif coord[0] == 'C' and coord[1] == '1'
+      choices = [@coords[index - 3], @coords[index + 5],
+                 @coords[index - 8], @coords[index + 2]]
+    elsif coord[0] == 'B' and coord[1] == '4'
+      choices = [@coords[index + 5], @coords[index - 3],
+                 @coords[index + 8], @coords[index - 2]]
+    else coord[0] == 'C' and coord[1] == '4'
+      choices = [@coords[index + 3], @coords[index - 5],
+                 @coords[index - 8], @coords[index - 2]]
     end
   end
 
