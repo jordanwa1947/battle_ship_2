@@ -65,22 +65,32 @@ class FireSequence
   end
 
   def computer_fire(potential_choices, choices_hash)
-    if potential_choices == nil
-      comp_coord = @computer_ships.board_coords.sample
-    else
-      comp_coord = potential_choices.sample
-    end
+    comp_coord = computer_chooses(potential_choices, choices_hash)
     @computer_ships.board_coords.delete(comp_coord)
+    did_the_computer_miss_or_hit(comp_coord, choices_hash)
+  end
+
+  def did_the_computer_miss_or_hit(comp_coord, choices_hash)
     if @coords3_array.include?(comp_coord) or @coords2_array.include?(comp_coord)
-      puts 'I Hit'
       @player_board.update_board(comp_coord, 'H')
+      puts 'I Hit'
       if_computer_sinks_ship(comp_coord)
       @player_board.display_board
       filter_choices(comp_coord, choices_hash)
     else
-      puts 'I Missed'
       @player_board.update_board(comp_coord, 'M')
+      puts 'I Missed'
       @player_board.display_board
+    end
+  end
+
+  def computer_chooses(potential_choices, choices_hash)
+    if potential_choices == nil
+      comp_coord = @computer_ships.board_coords.sample
+    else
+      comp_coord = potential_choices.sample
+      comp_coord = @computer_ships.board_coords.sample if comp_coord == nil
+      comp_coord
     end
   end
 
@@ -190,7 +200,7 @@ class FireSequence
   end
 
   def fire_sequence
-    p choices_hash = fire_choices
+    choices_hash = fire_choices
     potential_choices = nil
     while detecting_the_end
       puts 'Choose a coordinate to fire at'
