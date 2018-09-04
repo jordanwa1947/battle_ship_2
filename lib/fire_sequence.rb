@@ -64,19 +64,89 @@ class FireSequence
     end
   end
 
-  def computer_fire
-    comp_coord = @computer_ships.board_coords.sample
+  def computer_fire(potential_choices, choices_hash)
+    if potential_choices == nil
+      comp_coord = @computer_ships.board_coords.sample
+    else
+      comp_coord = potential_choices.sample
+    end
     @computer_ships.board_coords.delete(comp_coord)
     if @coords3_array.include?(comp_coord) or @coords2_array.include?(comp_coord)
       puts 'I Hit'
       @player_board.update_board(comp_coord, 'H')
       if_computer_sinks_ship(comp_coord)
       @player_board.display_board
+      filter_choices(comp_coord, choices_hash)
     else
       puts 'I Missed'
       @player_board.update_board(comp_coord, 'M')
       @player_board.display_board
     end
+  end
+
+  def filter_choices(hit, choices_hash)
+    @computer_ships.board_coords.find_all do |coord|
+      choices_hash[hit].include?(coord)
+    end
+  end
+
+  def choice_logic(coord)
+    index = @computer_ships.board_coords.index(coord)
+    coords = @computer_ships.board_coords
+    logic_hub(index, coords, coord)
+  end
+
+  def logic_hub(index, coords, coord)
+    if (coord[1] > '1' and coord[1] < '4') and (coord[0] < 'D' and coord[0] > 'A')
+      middle_coords(index, coords, coord)
+    elsif coord[1] > '1' and coord[1] < '4'
+      top_and_bottom_side_coords(index, coords, coord)
+    elsif coord[0] > 'A' and coord[0] < 'D'
+      right_and_left_side_coords(index, coords, coord)
+    else
+      corner_coords(index, coords, coord)
+    end
+  end
+
+  def middle_coords(index, coords, coord)
+    choices = [coords[index + 1], coords[index - 1],
+               coords[index - 4], coords[index + 4]]
+  end
+
+  def top_and_bottom_side_coords(index, coords, coord)
+    if coord[0] == 'A'
+      choices = [coords[index + 1], coords[index - 1], coords[index + 4]]
+    else coord[0] == 'D'
+      choices = [coords[index + 1], coords[index - 1], coords[index - 4]]
+    end
+  end
+
+  def right_and_left_side_coords(index, coords, coord)
+    if coord[1] == '1'
+      choices = [coords[index + 1], coords[index - 4], coords[index + 4]]
+    else coord[1] == '4'
+      choices = [coords[index + 4], coords[index - 1], coords[index - 4]]
+    end
+  end
+
+  def corner_coords(index, coords, coord)
+    if coord[0] == 'A' and coord[1] == '1'
+      choices = [coords[index + 1], coords[index + 4]]
+    elsif coord[0] == 'A' and coord[1] == '4'
+      choices = [coords[index - 1], coords[index + 4]]
+    elsif coord[0] == 'D' and coord[1] == '1'
+      choices = [coords[index + 1], coords[index - 4]]
+    else coord[0] == 'D' and coord[1] == '4'
+      choices = [coords[index - 1], coords[index - 4]]
+    end
+  end
+
+  def fire_choices
+    choice_hash = {}
+    @computer_ships.board_coords.each do |coord|
+      choice_hash[coord] = choice_logic(coord)
+    end
+    choice_hash
   end
 
   def if_computer_sinks_ship(comp_coord)
@@ -99,7 +169,7 @@ class FireSequence
   end
 
   def computers_turn
-    puts "Now it's the My turn; press c to continue."
+    puts "Now it's My turn; press c to continue."
     input = gets.chomp
     while input != 'c'
       input = gets.chomp
@@ -120,13 +190,15 @@ class FireSequence
   end
 
   def fire_sequence
+    p choices_hash = fire_choices
+    potential_choices = nil
     while detecting_the_end
       puts 'Choose a coordinate to fire at'
       valid_coord = validate_player_coord
       player_fire(valid_coord)
       break if player_wins
       computers_turn
-      computer_fire
+      potential_choices = computer_fire(potential_choices, choices_hash)
     end
   end
 end
