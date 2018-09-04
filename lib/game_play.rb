@@ -2,6 +2,7 @@ require './lib/computer_ships'
 require './lib/board_setup'
 require './lib/validate_coords'
 require './lib/fire_sequence'
+require './lib/computer_logic'
 require 'pry'
 
 class GamePlay
@@ -14,6 +15,7 @@ class GamePlay
     @computer_ships = ComputerShips.new
     @player_board = BoardSetup.new
     @player_fire_range = BoardSetup.new
+    @computer_logic = ComputerLogic.new
   end
 
   def game_play
@@ -24,7 +26,7 @@ class GamePlay
     coords2_array = ship2_coords.split(' ')
     fire_sequence = FireSequence.new(@player_fire_range, @player_board,
                         @validate_coords, @computer_ships, comp_coords,
-                                          coords2_array, coords3_array)
+                         @computer_logic, coords2_array, coords3_array)
     fire_sequence.fire_sequence
   end
 

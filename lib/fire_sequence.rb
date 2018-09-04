@@ -5,12 +5,13 @@ require 'pry'
 class FireSequence
 
   def initialize(player_fire_range, player_board, validate_coords,
-                computer_ships, computer_coords, coords2_array, coords3_array)
-
+                 computer_ships, computer_coords, computer_logic,
+                                    coords2_array, coords3_array)
       @player_fire_range = player_fire_range
       @player_board = player_board
       @validate_coords = validate_coords
       @computer_ships = computer_ships
+      @computer_logic = computer_logic
       @comp_coords = computer_coords
       @coords3_array = coords3_array
       @coords2_array = coords2_array
@@ -103,53 +104,7 @@ class FireSequence
 
   def choice_logic(coord)
     index = @computer_ships.board_coords.index(coord)
-    coords = @computer_ships.board_coords
-    logic_hub(index, coords, coord)
-  end
-
-  def logic_hub(index, coords, coord)
-    if (coord[1] > '1' and coord[1] < '4') and (coord[0] < 'D' and coord[0] > 'A')
-      middle_coords(index, coords, coord)
-    elsif coord[1] > '1' and coord[1] < '4'
-      top_and_bottom_side_coords(index, coords, coord)
-    elsif coord[0] > 'A' and coord[0] < 'D'
-      right_and_left_side_coords(index, coords, coord)
-    else
-      corner_coords(index, coords, coord)
-    end
-  end
-
-  def middle_coords(index, coords, coord)
-    choices = [coords[index + 1], coords[index - 1],
-               coords[index - 4], coords[index + 4]]
-  end
-
-  def top_and_bottom_side_coords(index, coords, coord)
-    if coord[0] == 'A'
-      choices = [coords[index + 1], coords[index - 1], coords[index + 4]]
-    else coord[0] == 'D'
-      choices = [coords[index + 1], coords[index - 1], coords[index - 4]]
-    end
-  end
-
-  def right_and_left_side_coords(index, coords, coord)
-    if coord[1] == '1'
-      choices = [coords[index + 1], coords[index - 4], coords[index + 4]]
-    else coord[1] == '4'
-      choices = [coords[index + 4], coords[index - 1], coords[index - 4]]
-    end
-  end
-
-  def corner_coords(index, coords, coord)
-    if coord[0] == 'A' and coord[1] == '1'
-      choices = [coords[index + 1], coords[index + 4]]
-    elsif coord[0] == 'A' and coord[1] == '4'
-      choices = [coords[index - 1], coords[index + 4]]
-    elsif coord[0] == 'D' and coord[1] == '1'
-      choices = [coords[index + 1], coords[index - 4]]
-    else coord[0] == 'D' and coord[1] == '4'
-      choices = [coords[index - 1], coords[index - 4]]
-    end
+    @computer_logic.logic_hub(index, coord)
   end
 
   def fire_choices
@@ -158,51 +113,6 @@ class FireSequence
       choice_hash[coord] = choice_logic(coord)
     end
     choice_hash
-  end
-
-  def logic_hub2(index, coords, coord)
-    if (coord[1] > '1' and coord[1] < '4') and (coord[0] < 'D' and coord[0] > 'A')
-      middle_coords2(index, coords, coord)
-    elsif coord[1] > '1' and coord[1] < '4'
-      top_and_bottom_side_coords2(index, coords, coord)
-    elsif coord[0] > 'A' and coord[0] < 'D'
-      right_and_left_side_coords2(index, coords, coord)
-    else
-      corner_coords2(index, coords, coord)
-    end
-  end
-
-  def middle_coords2(index, coords, coord)
-    choices = [coords[index + 3], coords[index - 3],
-               coords[index - 5], coords[index + 5]]
-  end
-
-  def top_and_bottom_side_coords2(index, coords, coord)
-    if coord[0] == 'A'
-      choices = [coords[index + 3], coords[index + 5], coords[index + 8]]
-    else coord[0] == 'D'
-      choices = [coords[index - 5], coords[index - 3], coords[index - 8]]
-    end
-  end
-
-  def right_and_left_side_coords2(index, coords, coord)
-    if coord[1] == '1'
-      choices = [coords[index + 5], coords[index - 3], coords[index + 2]]
-    else coord[1] == '4'
-      choices = [coords[index + 3], coords[index - 5], coords[index - 2]]
-    end
-  end
-
-  def corner_coords2(index, coords, coord)
-    if coord[0] == 'A' and coord[1] == '1'
-      choices = [coords[index + 2], coords[index + 8], coords[index + 5]]
-    elsif coord[0] == 'A' and coord[1] == '4'
-      choices = [coords[index + 8], coords[index + 3], coords[index - 2]]
-    elsif coord[0] == 'D' and coord[1] == '1'
-      choices = [coords[index - 8], coords[index - 3], coords[index + 2]]
-    else coord[0] == 'D' and coord[1] == '4'
-      choices = [coords[index - 2], coords[index - 5], coords[index - 8]]
-    end
   end
 
   def checker_choices
@@ -215,8 +125,7 @@ class FireSequence
 
   def checker_board_pattern(coord)
     index = @computer_ships.board_coords.index(coord)
-    coords = @computer_ships.board_coords
-    logic_hub2(index, coords, coord)
+    @computer_logic.logic_hub2(index, coord)
   end
 
   def if_computer_sinks_ship(comp_coord)
@@ -261,8 +170,12 @@ class FireSequence
 
   def fire_sequence
     choices_hash = fire_choices
-    p checker_hash = checker_choices
+    checker_hash = checker_choices
     potential_choices = nil
+    fire_until_the_end(potential_choices, choices_hash, checker_hash)
+  end
+
+  def fire_until_the_end(potential_choices,choices_hash, checker_hash) 
     while detecting_the_end
       puts 'Choose a coordinate to fire at'
       valid_coord = validate_player_coord

@@ -1,6 +1,7 @@
 require 'pry'
 require './lib/board_setup'
 
+
 class ComputerShips
   attr_reader :board_coords
   def initialize
