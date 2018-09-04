@@ -64,27 +64,28 @@ class FireSequence
     end
   end
 
-  def computer_fire(potential_choices, choices_hash)
-    comp_coord = computer_chooses(potential_choices, choices_hash)
+  def computer_fire(potential_choices, choices_hash, checker_board_hash)
+    comp_coord = computer_chooses(potential_choices)
     @computer_ships.board_coords.delete(comp_coord)
-    did_the_computer_miss_or_hit(comp_coord, choices_hash)
+    did_the_computer_miss_or_hit(comp_coord, choices_hash, checker_board_hash)
   end
 
-  def did_the_computer_miss_or_hit(comp_coord, choices_hash)
+  def did_the_computer_miss_or_hit(comp_coord, fire_hash, checker_board_hash)
     if @coords3_array.include?(comp_coord) or @coords2_array.include?(comp_coord)
       @player_board.update_board(comp_coord, 'H')
       puts 'I Hit'
       if_computer_sinks_ship(comp_coord)
       @player_board.display_board
-      filter_choices(comp_coord, choices_hash)
+      filter_choices(comp_coord, fire_hash)
     else
       @player_board.update_board(comp_coord, 'M')
       puts 'I Missed'
       @player_board.display_board
+      filter_choices(comp_coord, checker_board_hash)
     end
   end
 
-  def computer_chooses(potential_choices, choices_hash)
+  def computer_chooses(potential_choices)
     if potential_choices == nil
       comp_coord = @computer_ships.board_coords.sample
     else
@@ -159,6 +160,65 @@ class FireSequence
     choice_hash
   end
 
+  def logic_hub2(index, coords, coord)
+    if (coord[1] > '1' and coord[1] < '4') and (coord[0] < 'D' and coord[0] > 'A')
+      middle_coords2(index, coords, coord)
+    elsif coord[1] > '1' and coord[1] < '4'
+      top_and_bottom_side_coords2(index, coords, coord)
+    elsif coord[0] > 'A' and coord[0] < 'D'
+      right_and_left_side_coords2(index, coords, coord)
+    else
+      corner_coords2(index, coords, coord)
+    end
+  end
+
+  def middle_coords2(index, coords, coord)
+    choices = [coords[index + 3], coords[index - 3],
+               coords[index - 5], coords[index + 5]]
+  end
+
+  def top_and_bottom_side_coords2(index, coords, coord)
+    if coord[0] == 'A'
+      choices = [coords[index + 3], coords[index + 5], coords[index + 8]]
+    else coord[0] == 'D'
+      choices = [coords[index - 5], coords[index - 3], coords[index - 8]]
+    end
+  end
+
+  def right_and_left_side_coords2(index, coords, coord)
+    if coord[1] == '1'
+      choices = [coords[index + 5], coords[index - 3], coords[index + 2]]
+    else coord[1] == '4'
+      choices = [coords[index + 3], coords[index - 5], coords[index - 2]]
+    end
+  end
+
+  def corner_coords2(index, coords, coord)
+    if coord[0] == 'A' and coord[1] == '1'
+      choices = [coords[index + 2], coords[index + 8], coords[index + 5]]
+    elsif coord[0] == 'A' and coord[1] == '4'
+      choices = [coords[index + 8], coords[index + 3], coords[index - 2]]
+    elsif coord[0] == 'D' and coord[1] == '1'
+      choices = [coords[index - 8], coords[index - 3], coords[index + 2]]
+    else coord[0] == 'D' and coord[1] == '4'
+      choices = [coords[index - 2], coords[index - 5], coords[index - 8]]
+    end
+  end
+
+  def checker_choices
+    choice_hash = {}
+    @computer_ships.board_coords.each do |coord|
+      choice_hash[coord] = checker_board_pattern(coord)
+    end
+    choice_hash
+  end
+
+  def checker_board_pattern(coord)
+    index = @computer_ships.board_coords.index(coord)
+    coords = @computer_ships.board_coords
+    logic_hub2(index, coords, coord)
+  end
+
   def if_computer_sinks_ship(comp_coord)
     @coords2_array.delete(comp_coord)
     @coords3_array.delete(comp_coord)
@@ -201,6 +261,7 @@ class FireSequence
 
   def fire_sequence
     choices_hash = fire_choices
+    p checker_hash = checker_choices
     potential_choices = nil
     while detecting_the_end
       puts 'Choose a coordinate to fire at'
@@ -208,7 +269,7 @@ class FireSequence
       player_fire(valid_coord)
       break if player_wins
       computers_turn
-      potential_choices = computer_fire(potential_choices, choices_hash)
+      potential_choices = computer_fire(potential_choices, choices_hash, checker_hash)
     end
   end
 end
