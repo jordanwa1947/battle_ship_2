@@ -104,7 +104,7 @@ class FireSequence
 
   def choice_logic(coord)
     index = @computer_ships.board_coords.index(coord)
-    @computer_logic.logic_hub(index, coord)
+    @computer_logic.hit_logic_hub(index, coord)
   end
 
   def fire_choices
@@ -125,7 +125,7 @@ class FireSequence
 
   def checker_board_pattern(coord)
     index = @computer_ships.board_coords.index(coord)
-    @computer_logic.logic_hub2(index, coord)
+    @computer_logic.checker_logic_hub(index, coord)
   end
 
   def if_computer_sinks_ship(comp_coord)
@@ -175,7 +175,7 @@ class FireSequence
     fire_until_the_end(potential_choices, choices_hash, checker_hash)
   end
 
-  def fire_until_the_end(potential_choices,choices_hash, checker_hash) 
+  def fire_until_the_end(potential_choices,choices_hash, checker_hash)
     while detecting_the_end
       puts 'Choose a coordinate to fire at'
       valid_coord = validate_player_coord
