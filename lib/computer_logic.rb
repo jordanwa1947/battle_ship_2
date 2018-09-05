@@ -93,7 +93,7 @@ class ComputerLogic
       choices = [@coords[index - 3], @coords[index + 5],
                  @coords[index - 8], @coords[index + 2]]
     elsif coord[0] == 'B' and coord[1] == '4'
-      choices = [@coords[index + 5], @coords[index - 3],
+      choices = [@coords[index + 3], @coords[index - 5],
                  @coords[index + 8], @coords[index - 2]]
     else coord[0] == 'C' and coord[1] == '4'
       choices = [@coords[index + 3], @coords[index - 5],
