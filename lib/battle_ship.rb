@@ -7,10 +7,10 @@ class BattleShip
   end
 
   def welcome
-   puts 'Welcome to BATTLESHIP
+   puts "Welcome to BATTLESHIP
 
     Would you like to (p)lay, read the (i)nstructions, or (q)uit?
-    >'
+    >"
     user_input(gets.chomp)
   end
 
@@ -18,11 +18,32 @@ class BattleShip
     if option == 'p'
       @game_play.game_play
     elsif option == 'i'
-      'rules'
+      display_instructions
     elsif option == 'q'
-      'break'
+      return
     else
       'not a valid option'
+    end
+  end
+
+  def display_instructions
+    new_file = File.open('./data/instructions.txt', "r")
+    display = new_file.read
+    display.each_line do |line|
+    puts line
+    end
+    break_from_instructions
+  end
+
+  def break_from_instructions
+    option = gets.chomp
+    if option == 'b'
+      welcome
+    elsif option == 'q'
+      return
+    else
+      puts 'not a valid option'
+      break_from_instructions
     end
   end
 end

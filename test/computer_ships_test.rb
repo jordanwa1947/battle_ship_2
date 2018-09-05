@@ -21,19 +21,15 @@ class ComputerShipsTest < Minitest::Test
   def test_that_the_computer_can_choose_coordinates_for_ship2
     computer_ships = ComputerShips.new
     coords = computer_ships.comp_ship2
-    expected = computer_ships.board_coords.include?(coords[0])
-    expected2 = computer_ships.board_coords.include?(coords[1])
-    assert expected
-    assert expected2
+    assert computer_ships.board_coords.include?(coords[0])
+    assert computer_ships.board_coords.include?(coords[1])
   end
 
   def test_that_the_computer_can_choose_coords_for_ship3
     computer_ships = ComputerShips.new
     ship2_coords = computer_ships.comp_ship2
-    coords = computer_ships.comp_ship3(ship2_coords)
-    expected = computer_ships.board_coords.include?(coords[0])
-    expected2 = computer_ships.board_coords.include?(coords[1])
-    assert expected
-    assert expected2
+    coords = computer_ships.comp_ship3
+    assert computer_ships.board_coords.include?(coords[0])
+    assert computer_ships.board_coords.include?(coords[0])
   end
 end
