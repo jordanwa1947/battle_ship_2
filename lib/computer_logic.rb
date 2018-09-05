@@ -7,7 +7,7 @@ class ComputerLogic
                "D1", "D2", "D3", "D4"]
   end
 
-  def logic_hub(index, coord)
+  def hit_logic_hub(index, coord)
     if (coord[1] > '1' and coord[1] < '4') and (coord[0] < 'D' and coord[0] > 'A')
       middle_coords(index, coord)
     elsif coord[1] > '1' and coord[1] < '4'
@@ -52,7 +52,7 @@ class ComputerLogic
     end
   end
 
-  def logic_hub2(index, coord)
+  def checker_logic_hub(index, coord)
     if (coord[1] > '1' and coord[1] < '4') and (coord[0] < 'D' and coord[0] > 'A')
       middle_coords2(index, coord)
     elsif coord[1] > '1' and coord[1] < '4'
@@ -93,7 +93,7 @@ class ComputerLogic
       choices = [@coords[index - 3], @coords[index + 5],
                  @coords[index - 8], @coords[index + 2]]
     elsif coord[0] == 'B' and coord[1] == '4'
-      choices = [@coords[index + 5], @coords[index - 3],
+      choices = [@coords[index + 3], @coords[index - 5],
                  @coords[index + 8], @coords[index - 2]]
     else coord[0] == 'C' and coord[1] == '4'
       choices = [@coords[index + 3], @coords[index - 5],
