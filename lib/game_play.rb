@@ -7,7 +7,7 @@ require 'pry'
 
 class GamePlay
   attr_reader :validate_coords, :computer_ships, :player_board,
-              :player_fire_range
+              :player_fire_range, :computer_logic
   def initialize
     @invalid = 'please type valid coordinates'
     @overlap = 'ships may not overlap'
@@ -25,8 +25,8 @@ class GamePlay
     coords3_array = player_chooses_ship3(ship2_coords).split(' ')
     coords2_array = ship2_coords.split(' ')
     fire_sequence = FireSequence.new(@player_fire_range, @player_board,
-                        @validate_coords, @computer_ships, comp_coords,
-                         @computer_logic, coords2_array, coords3_array)
+                    @validate_coords, @computer_ships, comp_coords, @computer_logic,
+                    coords2_array, coords3_array)
     fire_sequence.fire_sequence
   end
 

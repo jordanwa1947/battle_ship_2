@@ -15,6 +15,7 @@ class FireSequence
       @comp_coords = computer_coords
       @coords3_array = coords3_array
       @coords2_array = coords2_array
+      @past_hit = false
   end
 
   def validate_player_coord
@@ -65,24 +66,56 @@ class FireSequence
     end
   end
 
-  def computer_fire(potential_choices, choices_hash, checker_board_hash)
+  def computer_fire(potential_choices, choices_hash, checker_hash)
     comp_coord = computer_chooses(potential_choices)
     @computer_ships.board_coords.delete(comp_coord)
-    did_the_computer_miss_or_hit(comp_coord, choices_hash, checker_board_hash)
+    did_the_computer_miss_or_hit(potential_choices, comp_coord,
+                                      choices_hash, checker_hash)
   end
 
-  def did_the_computer_miss_or_hit(comp_coord, fire_hash, checker_board_hash)
-    if @coords3_array.include?(comp_coord) or @coords2_array.include?(comp_coord)
+  def did_the_computer_miss_or_hit(potential_choices, comp_coord, fire_hash,
+                                                                checker_hash)
+    ship3_hit = @coords3_array.include?(comp_coord)
+    ship2_hit = @coords2_array.include?(comp_coord)
+    computer_choices_choice_logic(potential_choices, comp_coord, fire_hash,
+                                        ship3_hit, ship2_hit, checker_hash)
+  end
+
+  def computer_choices_choice_logic(potential_choices, comp_coord, fire_hash,
+                                          ship3_hit, ship2_hit, checker_hash)
+    if ship3_hit or ship2_hit
       @player_board.update_board(comp_coord, 'H')
       puts 'I Hit'
+      @past_hit = true
       if_computer_sinks_ship(comp_coord)
       @player_board.display_board
+      fire_choices_until_it_sinks(comp_coord, fire_hash, checker_hash)
+    else
+      was_the_last_shot_a_hit(comp_coord, potential_choices, checker_hash)
+    end
+  end
+
+
+  def fire_choices_until_it_sinks(comp_coord, fire_hash, checker_hash)
+    if @past_hit == true
       filter_choices(comp_coord, fire_hash)
+    else
+      filter_choices(comp_coord, checker_hash)
+    end
+  end
+
+  def was_the_last_shot_a_hit(comp_coord, potential_choices, checker_hash)
+    if @past_hit == true
+      @player_board.update_board(comp_coord, 'M')
+      puts 'I Missed'
+      @player_board.display_board
+      potential_choices.delete(comp_coord)
+      potential_choices
     else
       @player_board.update_board(comp_coord, 'M')
       puts 'I Missed'
       @player_board.display_board
-      filter_choices(comp_coord, checker_board_hash)
+      filter_choices(comp_coord, checker_hash)
     end
   end
 
@@ -135,13 +168,15 @@ class FireSequence
   end
 
   def if_the_computer_won
-    if @coords2_array.empty? and @coords3_array.empty?
+    if @coords2_array[0] == nil and @coords3_array[0] == nil
       puts 'I Won!'
-      puts 'Sorry about to loss champ'
+      puts 'Sorry about the loss champ'
     elsif @coords2_array.empty?
       puts 'I Sank Your 2 Unit Ship!'
+      @past_hit = false
     elsif @coords3_array.empty?
       puts 'I Sank Your 3 Unit Ship!'
+      @past_hit = false
     else
       return
     end
@@ -175,7 +210,7 @@ class FireSequence
     fire_until_the_end(potential_choices, choices_hash, checker_hash)
   end
 
-  def fire_until_the_end(potential_choices,choices_hash, checker_hash)
+  def fire_until_the_end(potential_choices, choices_hash, checker_hash)
     while detecting_the_end
       puts 'Choose a coordinate to fire at'
       valid_coord = validate_player_coord

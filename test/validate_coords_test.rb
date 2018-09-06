@@ -85,7 +85,7 @@ class ValidateCoordsTest < Minitest::Test
   def test_that_validate_ship_3_can_stop_overlap
     validate_coords = ValidateCoords.new
     validated = validate_coords.ship2('A1 A2')
-    expected = 'ships may not overlap'
+    expected = 'please type valid coordinates'
     assert_equal expected, validate_coords.ship3(validated, 'A1 A4')
   end
 

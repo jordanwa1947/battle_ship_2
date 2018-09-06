@@ -22,7 +22,8 @@ class BattleShip
     elsif option == 'q'
       return
     else
-      'not a valid option'
+      puts 'not a valid option'
+      welcome
     end
   end
 
