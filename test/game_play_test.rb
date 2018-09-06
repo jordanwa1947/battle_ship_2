@@ -16,22 +16,13 @@ class GamePlayTest < Minitest::Test
     game_play = GamePlay.new
     assert_instance_of ValidateCoords, game_play.validate_coords
     assert_instance_of ComputerShips, game_play.computer_ships
-    assert_instance_of BoardSetup, game_play.computer_board
     assert_instance_of BoardSetup, game_play.player_board
     assert_instance_of BoardSetup, game_play.player_fire_range
+    assert_instance_of ComputerLogic, game_play.computer_logic
   end
 
-  def test_computer_chooses_ships_that_are_valid
+  def test_that_prompt_ship_prints_instructions_to_screen
     game_play = GamePlay.new
-    computer_coords = game_play.computer_chooses_ships
-    ship2 = computer_coords[0..1].sort
-    if ship2[0][0] < 'D' and ship2[0][1] < '4'
-      boolean = (ship2[1] == ship2[0].succ or ship2[1][0] == ship2[0][0].succ)
-    elsif ship2[0][0] == 'D' and ship2[0][1] < '4'
-      boolean = (ship2[1] == ship2[0].succ)
-    else ship2[0][0] >= 'A' and ship2[0][1] == '4'
-      boolean = (ship2[1][0] == ship2[0][0].succ)
-    end
-    assert boolean
+    assert_equal nil, game_play.prompt_ship2
   end
 end
