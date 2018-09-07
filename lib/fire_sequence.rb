@@ -174,9 +174,11 @@ class FireSequence
     elsif @coords2_array.empty?
       puts 'I Sank Your 2 Unit Ship!'
       @past_hit = false
+      @coords2_array = [nil]
     elsif @coords3_array.empty?
       puts 'I Sank Your 3 Unit Ship!'
       @past_hit = false
+      @coords3_array = [nil]
     else
       return
     end
@@ -199,7 +201,7 @@ class FireSequence
 
   def detecting_the_end
     comp_ship_hits = (!(@comp_coords[0].empty?) or !(@comp_coords[1].empty?))
-    player_ship_hits = (!(@coords2_array.empty?) or !(@coords3_array.empty?))
+    player_ship_hits = (!(@coords2_array[0] == nil) or !(@coords3_array[0] == nil))
     comp_ship_hits and player_ship_hits
   end
 

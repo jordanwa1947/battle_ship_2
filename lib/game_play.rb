@@ -30,6 +30,14 @@ class GamePlay
     fire_sequence.fire_sequence
   end
 
+  def invalid
+    'please type valid coordinates'
+  end
+
+  def overlap
+    'ships may not overlap'
+  end
+
   def computer_chooses_ships
     computer_coords = @computer_ships.ships_may_not_overlap
     computer_coords
@@ -52,8 +60,8 @@ class GamePlay
   end
 
   def correct_invalid_ship_coords(ship2_coords)
-    while ship2_coords == @invalid
-      puts @invalid
+    while ship2_coords == invalid
+      puts invalid
       ship2_coords = @validate_coords.ship2(gets.chomp.upcase)
     end
     ship2_coords
@@ -74,18 +82,18 @@ class GamePlay
   end
 
   def ship3_coords_must_be_valid(ship3_coords, ship2_coords)
-    while ship3_coords == @invalid or ship3_coords == @overlap
+    while ship3_coords == invalid or ship3_coords == overlap
       ship3_coords = ship_placement_error_type(ship3_coords, ship2_coords)
     end
     ship3_coords
   end
 
   def ship_placement_error_type(ship3_coords, ship2_coords)
-    if ship3_coords == @invalid
-      puts @invalid
+    if ship3_coords == invalid
+      puts invalid
       @validate_coords.ship3(ship2_coords, gets.chomp.upcase)
-    else ship3_coords == @overlap
-      puts @overlap
+    else ship3_coords == overlap
+      puts overlap
       puts 'please try again'
       @validate_coords.ship3(ship2_coords, gets.chomp.upcase)
     end

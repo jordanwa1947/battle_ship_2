@@ -2,13 +2,10 @@ class BoardSetup
 attr_reader :one, :two, :three,
             :a, :b, :c, :d
   def initialize
-    @one = "=" * 11
-    @two = ". 1 2 3 4"
     @a =   "A        "
     @b =   "B        "
     @c =   "C        "
     @d =   "D        "
-    @three = "=" * 11
   end
 
   def update_board(cord, fill)
@@ -17,7 +14,7 @@ attr_reader :one, :two, :three,
     if let == "A"
       @a[num] = fill
     elsif let == "B"
-      @b[num] = fill 
+      @b[num] = fill
     elsif let == "C"
       @c[num] = fill
     else let == "D"
@@ -26,12 +23,12 @@ attr_reader :one, :two, :three,
   end
 
   def display_board
-  puts  @one
-  puts  @two
+  puts  "==========="
+  puts  ". 1 2 3 4"
   puts  @a
   puts  @b
   puts  @c
   puts  @d
-  puts  @three
+  puts  "==========="
   end
 end
